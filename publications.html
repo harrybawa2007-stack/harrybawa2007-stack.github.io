@@ -7,123 +7,204 @@
     <link rel="icon" href="assets/profilepic.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Basic reset + sensible box model */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { font-size: 16px; -webkit-text-size-adjust: 100%; }
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-            font-size: 16px;
+            margin: 0;
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: #1a1a1a;
-            color: rgb(255, 255, 255);
+            color: #fff;
+            line-height: 1.45;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        /* Page wrapper: centers content and adapts to viewport */
+        .site-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* Profile area: responsive flex that wraps on narrow screens */
         .profile-container {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            align-items: flex-start;
-            margin-top: 20px;
-            margin-left: 150px;
-            margin-right: 150px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
+
         .profile {
             display: flex;
             align-items: center;
-            gap: 20px;
-            max-width: 500px;
+            gap: 16px;
+            flex: 1 1 320px; /* grow/shrink with a sensible minimum */
+            min-width: 0;    /* allow text to truncate/wrap properly inside flex */
         }
+
         .profile img {
-            width: 100px;
-            height: 100px;
-            border-radius: 10%;
+            /* responsive image sizing */
+            width: clamp(64px, 11vw, 110px);
+            height: clamp(64px, 11vw, 110px);
             object-fit: cover;
-            
+            border-radius: 10%;
+            transition: transform 0.2s ease;
+            flex-shrink: 0;
         }
 
         .profile img:hover {
-            transform: scale(1.2);
-            transition: transform 0.2s ease;
+            transform: scale(1.12);
         }
+
         .profile-text h1 {
             margin: 0;
-            font-size: 22px;
+            font-size: clamp(18px, 2.4vw, 22px);
+            line-height: 1.05;
         }
+
         .profile-text p {
-            margin: 1px 0 0 0;
-            font-size: 16px;
-            color: rgb(200, 200, 200);
+            margin: 4px 0 0;
+            font-size: clamp(13px, 1.6vw, 16px);
+            color: #c8c8c8;
         }
+
+        .profile-text p.small {
+            font-size: clamp(12px, 1.4vw, 14px);
+            color: #bfbfbf;
+        }
+
+        /* Social icons aligned to the right on wide screens, centered when stacked */
         .social-icons {
             display: flex;
             gap: 15px;
-            margin-top: 50px;
+            align-items: center;
+            justify-content: flex-end;
+            flex: 0 0 auto;
         }
         .social-icons a {
-            font-size: 24px;
-            color: rgb(255, 255, 255);
-            transition: color 0.3s;
+            font-size: clamp(18px, 2.6vw, 24px);
+            color: #fff;
+            transition: color 0.25s ease, transform 0.2s ease;
         }
         .social-icons a:hover {
             color: rgb(100, 150, 255);
+            transform: scale(1.12);
             text-decoration: none;
         }
 
-
+        /* Navigation */
         nav {
-            text-align: center;
-            margin-top: 50px;
+            margin-top: 28px;
             display: flex;
             justify-content: center;
-            gap: 40px;
+            gap: 32px;
+            flex-wrap: wrap;
         }
-        a {
-            color: rgb(255, 255, 255);
-            text-decoration: none;
-        }
-        a:hover {
-
-            color: rgb(100, 150, 255);
-            text-decoration: none;
-            transform: scale(1.2);
-            transition: transform 0.2s ease;
-
-        }
-        
         nav a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.25s ease, transform 0.25s ease;
-}
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.25s ease, transform 0.25s ease;
+            font-size: clamp(14px, 1.6vw, 16px);
+            padding: 6px 4px;
+            display: inline-block;
+        }
+        nav a:hover {
+            color: rgb(100, 150, 255);
+            transform: scale(1.08);
+        }
+        nav a.active {
+            color: rgb(100, 150, 255);
+            transform: scale(1.08);
+        }
 
-nav a:hover {
-    color: rgb(100, 150, 255);
-    transform: scale(1.2);
-}
+        /* Reusable overview block
+           Condense horizontally by leaving ~500px space on each side when viewport allows.
+           Uses clamp so it remains responsive on smaller screens. */
+        .overview {
+            width: clamp(300px, calc(100% - 600px), 900px); /* 100% minus 600px gives ~300px each side */
+            margin: 48px auto;
+            padding: 0 12px;
+            text-align: left;
+        }
+        .overview h2 {
+            margin: 0 0 12px 0;
+            font-size: clamp(18px, 2.2vw, 22px);
+        }
+        .overview p {
+            margin: 8px 0;
+            font-size: clamp(14px, 1.6vw, 16px);
+            color: #eaeaea;
+        }
 
-/* stays highlighted on the active page */
-nav a.active {
-    color: rgb(100, 150, 255);       /* blue */
-    transform: scale(1.2);          /* enlarged */
-                  /* optional: makes it look crisp */
-}
+        /* Slight spacing for vision section */
+        .vision p { margin-bottom: 18px; }
+
+        /* Responsive adjustments for small screens */
+        @media (max-width: 1200px) {
+            /* On medium and smaller screens, fall back to the previous centered behavior */
+            .overview {
+                width: auto;
+                max-width: 900px;
+                margin: 28px auto;
+                padding: 0 12px;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .site-wrap { padding: 18px; }
+            .profile-container {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 10px;
+            }
+            .profile {
+                justify-content: center;
+            }
+            .social-icons {
+                justify-content: center;
+                width: 100%;
+            }
+            .overview { margin: 28px 0; padding: 0 6px; }
+            nav { gap: 16px; margin-top: 18px; }
+        }
+
+        /* Very small phones: tighten spacing */
+        @media (max-width: 380px) {
+            .site-wrap { padding: 12px; }
+            nav { gap: 10px; }
+            .overview { margin: 20px 0; }
+        }
     </style>
 </head>
 
 <body>
-    <div class="profile-container">
-        <div class="profile">
-            <img src="assets/profilepic.png" alt="Harry Bawa">
-            <div class="profile-text">
-                <h1>Harry Bawa</h1>
-                <p>Student | Athlete | Engineer</p>
-                <p style="font-size: 14px;">● Pre-Med ● BMB ● BME/BT</p>
+    <div class="site-wrap">
+        <div class="profile-container">
+            <div class="profile">
+                <img src="assets/profilepic.png" alt="Harry Bawa">
+                <div class="profile-text">
+                    <h1>Harry Bawa</h1>
+                    <p>Student | Athlete | Engineer</p>
+                    <p class="small">● Pre-Med ● BMB ● BME/BT</p>
+                </div>
+            </div>
+
+            <div class="social-icons" aria-label="Social links">
+                <a href="https://www.instagram.com/rockbottom567/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                <a href="https://discord.com/users/493501693267410964" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
             </div>
         </div>
-        <div class="social-icons">
-            <a href="https://www.instagram.com/rockbottom567/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            <a href="https://discord.com/users/493501693267410964" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
-        </div>
+
+        <nav>
+            <a href="index.html">About</a>
+            <a href="projects.html">Projects</a>
+            <a href="publications.html">Publications</a>
+        </nav>
+
+        
     </div>
-    <nav>
-        <a href="index.html">About</a>
-        <a href="projects.html">Projects</a>
-        <a href="publications.html" class="active">Publications</a>
-    </nav>
-    
 </body>
 </html>
