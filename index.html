@@ -1,33 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Harry Bawa</title>
+    <!-- site icon -->
     <link rel="icon" href="assets/profilepic.png" type="image/png">
+    <!-- font-awesome for social icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        /* Basic reset + sensible box model */
+        /* ----------------------------------------
+           Basic reset and global defaults
+           ---------------------------------------- */
         *, *::before, *::after { box-sizing: border-box; }
         html { font-size: 16px; -webkit-text-size-adjust: 100%; }
         body {
             margin: 0;
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #1a1a1a;
+            background: #1a1a1a;
             color: #fff;
             line-height: 1.45;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Page wrapper: centers content and adapts to viewport */
+        /* ----------------------------------------
+           Page wrapper: centers content and constrains width
+           ---------------------------------------- */
         .site-wrap {
             max-width: 1100px;
             margin: 0 auto;
             padding: 24px;
         }
 
-        /* Profile area: responsive flex that wraps on narrow screens */
+        /* ----------------------------------------
+           Header / profile area
+           - responsive flex container that wraps on narrow screens
+           - keeps profile and social icons aligned
+           ---------------------------------------- */
         .profile-container {
             display: flex;
             align-items: center;
@@ -36,16 +47,17 @@
             flex-wrap: wrap;
         }
 
+        /* Left side: avatar + text */
         .profile {
             display: flex;
             align-items: center;
             gap: 16px;
-            flex: 1 1 320px; /* grow/shrink with a sensible minimum */
-            min-width: 0;    /* allow text to truncate/wrap properly inside flex */
+            flex: 1 1 320px; /* grow/shrink, with a reasonable minimum */
+            min-width: 0;    /* prevents overflow from long text in flex item */
         }
 
+        /* Avatar image: responsive sizing and hover effect */
         .profile img {
-            /* responsive image sizing */
             width: clamp(64px, 11vw, 110px);
             height: clamp(64px, 11vw, 110px);
             object-fit: cover;
@@ -53,29 +65,26 @@
             transition: transform 0.2s ease;
             flex-shrink: 0;
         }
+        .profile img:hover { transform: scale(1.12); }
 
-        .profile img:hover {
-            transform: scale(1.12);
-        }
-
+        /* Name and short descriptors */
         .profile-text h1 {
             margin: 0;
             font-size: clamp(18px, 2.4vw, 22px);
             line-height: 1.05;
         }
-
         .profile-text p {
             margin: 4px 0 0;
             font-size: clamp(13px, 1.6vw, 16px);
             color: #c8c8c8;
         }
-
         .profile-text p.small {
             font-size: clamp(12px, 1.4vw, 14px);
             color: #bfbfbf;
         }
 
-        /* Social icons aligned to the right on wide screens, centered when stacked */
+        /* Right side: social icons
+           - aligned to the right on wide screens, centered on small screens */
         .social-icons {
             display: flex;
             gap: 15px;
@@ -89,12 +98,15 @@
             transition: color 0.25s ease, transform 0.2s ease;
         }
         .social-icons a:hover {
-            color: rgb(100, 150, 255);
+            color: rgb(100,150,255);
             transform: scale(1.12);
             text-decoration: none;
         }
 
-        /* Navigation */
+        /* ----------------------------------------
+           Navigation
+           - centered with spacing between links
+           ---------------------------------------- */
         nav {
             margin-top: 28px;
             display: flex;
@@ -110,40 +122,34 @@
             padding: 6px 4px;
             display: inline-block;
         }
-        nav a:hover {
-            color: rgb(100, 150, 255);
-            transform: scale(1.08);
-        }
+        nav a:hover,
         nav a.active {
-            color: rgb(100, 150, 255);
+            color: rgb(100,150,255);
             transform: scale(1.08);
         }
 
-        /* Reusable overview block
-           Condense horizontally by leaving ~500px space on each side when viewport allows.
-           Uses clamp so it remains responsive on smaller screens. */
+        /* ----------------------------------------
+           Reusable "overview" block
+           - uses clamp() so it remains responsive
+           - width attempts to leave ~300px margin each side on wide screens
+           ---------------------------------------- */
         .overview {
-            width: clamp(300px, calc(100% - 600px), 900px); /* 100% minus 600px gives ~300px each side */
+            width: clamp(300px, calc(100% - 600px), 900px);
             margin: 48px auto;
             padding: 0 12px;
             text-align: left;
         }
-        .overview h2 {
-            margin: 0 0 12px 0;
-            font-size: clamp(18px, 2.2vw, 22px);
-        }
-        .overview p {
-            margin: 8px 0;
-            font-size: clamp(14px, 1.6vw, 16px);
-            color: #eaeaea;
-        }
+        .overview h2 { margin: 0 0 12px 0; font-size: clamp(18px, 2.2vw, 22px); }
+        .overview p { margin: 8px 0; font-size: clamp(14px, 1.6vw, 16px); color: #eaeaea; }
 
-        /* Slight spacing for vision section */
+        /* Fine tuning for a particular subsection */
         .vision p { margin-bottom: 18px; }
 
-        /* Responsive adjustments for small screens */
+        /* ----------------------------------------
+           Responsive adjustments
+           - reduce paddings/gaps and stack layout on small screens
+           ---------------------------------------- */
         @media (max-width: 1200px) {
-            /* On medium and smaller screens, fall back to the previous centered behavior */
             .overview {
                 width: auto;
                 max-width: 900px;
@@ -151,7 +157,6 @@
                 padding: 0 12px;
             }
         }
-
         @media (max-width: 700px) {
             .site-wrap { padding: 18px; }
             .profile-container {
@@ -160,18 +165,11 @@
                 text-align: center;
                 gap: 10px;
             }
-            .profile {
-                justify-content: center;
-            }
-            .social-icons {
-                justify-content: center;
-                width: 100%;
-            }
+            .profile { justify-content: center; }
+            .social-icons { justify-content: center; width: 100%; }
             .overview { margin: 28px 0; padding: 0 6px; }
             nav { gap: 16px; margin-top: 18px; }
         }
-
-        /* Very small phones: tighten spacing */
         @media (max-width: 380px) {
             .site-wrap { padding: 12px; }
             nav { gap: 10px; }
@@ -179,12 +177,16 @@
         }
     </style>
 </head>
-
 <body>
+    <!-- Main page container -->
     <div class="site-wrap">
-        <div class="profile-container">
+
+        <!-- Header: profile + social icons -->
+        <header class="profile-container" role="banner">
+            <!-- Profile (avatar + name/roles) -->
             <div class="profile">
-                <img src="assets/profilepic.png" alt="Harry Bawa">
+                <!-- Avatar image (keeps same file) -->
+                <img src="assets/profilepic.png" alt="Portrait of Harry Bawa">
                 <div class="profile-text">
                     <h1>Harry Bawa</h1>
                     <p>Student | Athlete | Engineer</p>
@@ -192,46 +194,55 @@
                 </div>
             </div>
 
+            <!-- Social links (open in new tab, use noopener for security) -->
             <div class="social-icons" aria-label="Social links">
-                <a href="https://www.instagram.com/rockbottom567/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                <a href="https://discord.com/users/493501693267410964" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord" aria-hidden="true"></i></a>
+                <a href="https://www.instagram.com/rockbottom567/" target="_blank" rel="noopener" aria-label="Instagram">
+                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+                <a href="https://discord.com/users/493501693267410964" target="_blank" rel="noopener" aria-label="Discord">
+                    <i class="fab fa-discord" aria-hidden="true"></i>
+                </a>
             </div>
-        </div>
+        </header>
 
-        <nav>
+        <!-- Primary navigation (simple site links) -->
+        <nav role="navigation" aria-label="Main navigation">
             <a href="index.html" class="active">About</a>
             <a href="projects.html">Projects</a>
             <a href="publications.html">Publications</a>
         </nav>
 
-        <div class="overview">
-            <h2>Quick Overview</h2>
-            <p><strong>I am actively…</strong></p>
-            <p>Studying BMB at UC Davis, building biomedical projects (BME/BT projects), training in bodybuilding &amp; calisthenics, and coaching/mentoring individuals in exercise &amp; health.</p>
-            <p><strong>I am leisurely…</strong></p>
-            <p>Training in volleyball semi-competitively, researching oncology, and reading/writing (currently writing a book).</p>
-        </div>
+        <!-- Content sections: each overview is a self-contained content block -->
+        <main>
+            <section class="overview" aria-labelledby="overview-heading">
+                <h2 id="overview-heading">Quick Overview</h2>
+                <p><strong>I am actively…</strong></p>
+                <p>Studying BMB at UC Davis, building biomedical projects (BME/BT projects), training in bodybuilding &amp; calisthenics, and coaching/mentoring individuals in exercise &amp; health.</p>
+                <p><strong>I am leisurely…</strong></p>
+                <p>Training in volleyball semi-competitively, researching oncology, and reading/writing (currently writing a book).</p>
+            </section>
 
-        <div class="overview vision">
-            <h2>My Vision — As of November 2025</h2>
-            <p><strong>TL;DR:</strong> I aspire to be a medical professional in the field of oncology (cancer) &amp; surgical oncology.</p>
-            <p>As modern society advances, health complications within our nation have also advanced—specifically, cancer. Though countermeasures against this rise are praised, it is more imperative to focus on the affected populations at present. With continued development in scientific understanding and intrinsic cooperation, proper treatment and recovery of cancer patients are to be assured. With the skills and knowledge I gain throughout my undergraduate and professional education, I believe I can make a positive impact towards that goal.</p>
+            <section class="overview vision" aria-labelledby="vision-heading">
+                <h2 id="vision-heading">My Vision — As of November 2025</h2>
+                <p><strong>TL;DR:</strong> I aspire to be a medical professional in the field of oncology (cancer) &amp; surgical oncology.</p>
+                <p>As modern society advances, health complications within our nation have also advanced—specifically, cancer. Though countermeasures against this rise are praised, it is more imperative to focus on the affected populations at present. With continued development in scientific understanding and intrinsic cooperation, proper treatment and recovery of cancer patients are to be assured. With the skills and knowledge I gain throughout my undergraduate and professional education, I believe I can make a positive impact towards that goal.</p>
 
-            <h2>My Philosophy</h2>
-            <p>In my heart, I believe that every human has an obligation to make the world a better place, no matter how big or small. This can range from self-improvement, helping those in need, or creating something beneficial for others—things I try to do my best in. With the knowledge and skills I gather from academia and my personal life, I ensure my actions take part in the bigger story of life: the long dream of humanity.</p>
-        </div>
+                <h2>My Philosophy</h2>
+                <p>In my heart, I believe that every human has an obligation to make the world a better place, no matter how big or small. This can range from self-improvement, helping those in need, or creating something beneficial for others—things I try to do my best in. With the knowledge and skills I gather from academia and my personal life, I ensure my actions take part in the bigger story of life: the long dream of humanity.</p>
+            </section>
 
-        <div class="overview">
-            <h2>Education</h2>
-            <p style="font-size: clamp(16px, 1.9vw, 18px);"><strong>University of California, Davis — Class of 2029</strong></p>
-            <p>B.S. in Biochemistry &amp; molecular Biology, UC Davis College of Biological Sciences</p>
+            <section class="overview" aria-labelledby="education-heading">
+                <h2 id="education-heading">Education</h2>
+                <p style="font-size: clamp(16px, 1.9vw, 18px);"><strong>University of California, Davis — Class of 2029</strong></p>
+                <p>B.S. in Biochemistry &amp; molecular Biology, UC Davis College of Biological Sciences</p>
 
-            <p><strong>Curricular Focus</strong></p>
-            <p>On track to graduate in 2-3 years, emphasis on medical-specific material mastery.</p>
+                <p><strong>Curricular Focus</strong></p>
+                <p>On track to graduate in 2-3 years, emphasis on medical-specific material mastery.</p>
 
-            <p><strong>Extracurricular Focus</strong></p>
-            <p>Mentoring/coaching individuals on exercise and health, BME/BT projects.</p>
-        </div>
+                <p><strong>Extracurricular Focus</strong></p>
+                <p>Mentoring/coaching individuals on exercise and health, BME/BT projects.</p>
+            </section>
+        </main>
     </div>
 </body>
 </html>
